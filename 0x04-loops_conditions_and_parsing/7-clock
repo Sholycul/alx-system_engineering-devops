@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#This Script prints the 12 hours of a clock and minutes
+
 
 hour=0
 minutes=1
