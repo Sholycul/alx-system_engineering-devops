@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #This Script displays PID and process name of files containig 'bash'
-
+# shellcheck disable=SC2009
 
 pgrep -f 'bash' | while read -r pid; do
 	process_name=$(awk '{print $2}' "/proc/$pid/stat")
