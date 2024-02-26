@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#This Script displays PID and process name of files containig 'bash'
+
+
+pgrep -f 'bash' | while read -r pid; do
+	process_name=$(awk '{print $2}' "/proc/$pid/stat")
+	echo "$pid $process_name"
+done
