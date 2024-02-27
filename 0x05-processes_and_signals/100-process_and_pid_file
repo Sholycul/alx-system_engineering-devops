@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#This Script handles some signal thrown at it
+
+pid_file="/var/run/myscript.pid"
+
+cleanup(){
+	rm -f "$pid_file"
+	exit
+}
+
+trap 'echo "I hate the kill command"; cleanup' SIGTERM
+
+trap 'echo "Y U no love me?!";' SIGINT
+
+trap 'cleanup' SIGQUIT
+
+echo "$$" > "$pid_file"
+
+while true; do
+	echo "To infinity and beyond"
+	sleep 2
+done
