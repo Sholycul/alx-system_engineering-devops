@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#This Script reads and print the content of the /etc/passwd/ file
+
+
+while IFS=: read -r username password uid gid user_info home_directory shell; do
+        full_name=$(echo "$user_info" | awk -F, '{print $1}')
+        group_name=$(echo "$user_info" | awk -F, '{print $2}')
+
+         echo "The user $username is part of the $gid gang, lives in $home_directory, and rides $shell."
+    echo "$uid's place is protected by the passcode $password, more info about the user: $full_name"
+done < /etc/passwd
