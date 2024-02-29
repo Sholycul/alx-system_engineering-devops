@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#This Script shows only the listening sockets
+#+ the PID and the name
+
+
+lsof -l --program
