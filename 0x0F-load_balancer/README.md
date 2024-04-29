@@ -1,4 +1,4 @@
-eadme: Load Balancer Configuration
+#Readme: Load Balancer Configuration
 
 Welcome to the Load Balancer Configuration project! This project aims to set up and configure a load balancer using HAProxy to distribute traffic among multiple web servers. Below are the tasks and their requirements for the successful completion of this project.
 
