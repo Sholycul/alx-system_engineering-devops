@@ -1,28 +1,46 @@
-#!/usr/bin/env bash
-# Create a script to install and configure HAProxy on lb-01 server
-# Configure HAProxy to send traffic to web-01 and web-02 servers
-# Distribute requests using a roundrobin algorithm
-# Make sure that HAProxy can be managed via an init script
-# Install and configure HAproxy on my lb-01 server.
-sudo apt-get -y update
-apt-get -y install haproxy
+o -e "Updating and doing some minor checks...\n"
 
-# edit config file
-server_config=\
-"
-frontend  shola-frontend
-        bind *:80
-        mode http
-        default_backend shola-backend
-backend shola-backend
-        balance roundrobin
-        server 347710-web-01 54.227.161.229 check
-        server 347710-web-02 34.234.203.192 check
-"
-echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+function install() {
+    if ! command -v "$1" &>/dev/null; then
+        echo "Installing: $1"
+        sudo apt-get update -y -qq
+        sudo apt-get install -y "$1" -qq
+    else
+        echo "$1 is already installed."
+    fi
+}
 
-# enable haproxy to be started by init script
+install haproxy
 
-echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+echo -e "\nSetting up HAProxy configuration...\n"
 
-sudo service haproxy restart
+# Backup default configuration
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.backup
+
+# Configure HAProxy
+cat <<EOF | sudo tee /etc/haproxy/haproxy.cfg >/dev/null
+defaults
+    mode http
+    timeout client 15s
+    timeout connect 10s
+    timeout server 15s
+    timeout http-request 10s
+
+frontend sholycool-frontend
+    bind *:80
+    default_backend sholycool-backend
+
+backend sholycool-backend
+    balance roundrobin
+    server 347710-web-01 54.227.161.229:80 check
+    server 347710-web-02 100.26.175.56:80 check
+EOF
+
+# Enable HAProxy to be started by init script
+sudo systemctl enable haproxy
+
+# Restart HAProxy service
+sudo systemctl restart haproxy
+
+echo "HAProxy configuration complete."
+

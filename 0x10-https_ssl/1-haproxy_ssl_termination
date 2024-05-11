@@ -1,0 +1,15 @@
+defaults
+    mode http
+    timeout client 15s
+    timeout connect 10s
+    timeout server 15s
+    timeout http-request 10s
+
+frontend sholycool-frontend
+    bind *:80
+    default_backend sholycool-backend
+
+backend sholycool-backend
+    balance roundrobin
+    server 347710-web-01 54.227.161.229:80 check
+    server 347710-web-02 100.26.175.56:80 check
