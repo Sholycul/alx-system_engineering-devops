@@ -9,6 +9,8 @@
 #
 *nat
 :PREROUTING ACCEPT [0:0]
+# It checks for incoming TCP traffic on port 8080.
+# If a match is found, it redirects the traffic to port 80.
 -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
 # The COMMIT statement finalizes and applies the NAT rules.
 COMMIT
